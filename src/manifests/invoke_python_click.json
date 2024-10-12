@@ -1,0 +1,184 @@
+{
+	"aliases": [
+		"PythonClick",
+		"LeftPythonClick",
+		"LeftMousePythonClick"
+	],
+	"author": {
+		"name": "Roei Sabag",
+		"link": "https://www.linkedin.com/in/roei-sabag-247aa18/"
+	},
+	"categories": [
+		"Ui",
+		"Browser"
+	],
+	"description": [
+		"### Purpose",
+		"",
+		"The primary purpose of the `InvokeClick` plugin is to perform click actions on specified web elements. It supports conditional clicks, allowing the action to be retried until a specified condition is met or a timeout occurs.",
+		"",
+		"### Key Features and Functionality",
+		"",
+		"| Feature             | Description                                                                                  |",
+		"|---------------------|----------------------------------------------------------------------------------------------|",
+		"| Click Action        | Performs a click action on the specified web element.                                        |",
+		"| Conditional Click   | Supports conditional clicks, where the action is retried until a specified condition is met. |",
+		"| Element Handling    | Handles web elements based on provided locators and attributes.                              |",
+		"| Timeout and Polling | Allows specification of timeout and polling intervals for conditional clicks.                |",
+		"",
+		"### Usages in RPA",
+		"",
+		"| Usage               | Description                                                                                                  |",
+		"|---------------------|--------------------------------------------------------------------------------------------------------------|",
+		"| Element Interaction | Interact with web elements by performing click actions as part of automated workflows.                       |",
+		"| Conditional Actions | Automate conditional click actions, ensuring certain conditions are met before proceeding with the workflow. |",
+		"| Form Submission     | Automatically submit forms by clicking submit buttons after populating fields.                               |",
+		"| Modal Handling      | Close modal dialogs by clicking the close button or overlay.                                                 |",
+		"| Navigation          | Navigate through multi-step processes by clicking next buttons or links.                                     |",
+		"",
+		"### Usages in Automation Testing",
+		"",
+		"| Usage                       | Description                                                                                                                                |",
+		"|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|",
+		"| UI Testing                  | Perform click actions on web elements to test user interface interactions.                                                                 |",
+		"| Conditional Testing         | Test scenarios where actions depend on specific conditions being met, such as waiting for alerts to close or elements to become clickable. |",
+		"| Regression Testing          | Ensure that click functionalities work as expected after changes or updates to the web application.                                        |",
+		"| Dynamic Content Testing     | Handle dynamic content by clicking on elements that appear or change based on user interactions or server responses.                       |",
+		"| Interactive Element Testing | Verify the functionality of interactive elements such as dropdowns, checkboxes, radio buttons, and sliders by performing click actions.    |"
+	],
+	"examples": [
+		{
+			"description": [
+				"Perform a `Click` action on a web element with the `ID` attribute `ClickButton`, using a CSS selector to locate the element."
+			],
+			"rule": {
+				"locator": "CssSelector",
+				"onElement": "#ClickButton",
+				"pluginName": "InvokePythonClick"
+			}
+		},
+		{
+			"description": [
+				"Perform a `Click` action at the last known mouse location. ",
+				"While this approach might be suitable for certain scenarios, it's generally less reliable and less commonly used in automation testing compared to locating and interacting with elements using locators."
+			],
+			"rule": {
+				"pluginName": "InvokePythonClick"
+			}
+		},
+		{
+			"description": [
+				"Perform a `Click` action on a web element with the ID attribute `PopAlert`. ",
+				"The script is configured to click repeatedly at 1-second intervals until an alert associated with the clicked element exists, allowing a maximum of 15 seconds for the alert to appear. ",
+				"This configuration is particularly useful for scenarios where an action triggers an alert, and the automation script needs to wait for that alert to become present before proceeding further."
+			],
+			"rule": {
+				"argument": "{{$ --Polling:1.0 --Condition:AlertExists --Timeout:00:00:15}}",
+				"locator": "Id",
+				"onElement": "PopAlert",
+				"pluginName": "InvokePythonClick"
+			}
+		},
+		{
+			"description": [
+				"Perform a `Click` action on a web element with the ID attribute `PopAlert`. ",
+				"The script is configured to repetitively perform the `Click` action at 1-second intervals. ",
+				"If an alert associated with the clicked element appears after each click, the automation script will automatically dismiss the alert until it is no longer triggered by the click action. ",
+				"The script will continue this process for a maximum duration of 15 seconds. ",
+				"This configuration is particularly useful for scenarios where an action's effects are expected to trigger an alert that needs to be handled before proceeding further with the automation test."
+			],
+			"rule": {
+				"argument": "{{$ --Polling:1.0 --Condition:AlertNotExists --Timeout:00:00:15}}",
+				"locator": "Id",
+				"onElement": "PopAlert",
+				"pluginName": "InvokePythonClick"
+			}
+		},
+		{
+			"description": [
+				"Perform a `Click` action on a web element identified by the CSS selector `#UntilAttribute`. ",
+				"The script is configured to repetitively perform the `Click` action at 1-second intervals until the value of the `value` attribute on the element equals `10`, or until a maximum of 15 seconds has elapsed. ",
+				"This configuration is useful for scenarios where the value of a specific attribute on an element needs to be modified by repeated clicking, and the script waits until the desired attribute value is achieved before proceeding further with the automation."
+			],
+			"rule": {
+				"argument": "{{$ --Polling:1.0 --Condition:ElementAttribute --Equal:10 --Timeout:00:00:15}}",
+				"locator": "CssSelector",
+				"onAttribute": "value",
+				"onElement": "#UntilAttribute",
+				"pluginName": "InvokePythonClick"
+			}
+		}
+	],
+	"key": "InvokePythonClick",
+	"manifestVersion": 4,
+	"parameters": [
+		{
+			"description": [
+				"Specifies the timeout duration in milliseconds for the click action. If not specified, the default timeout which is based on the automation 'LoadTimeout' settings, will be used."
+			],
+			"mandatory": false,
+			"name": "Timeout",
+			"type": "Number"
+		},
+		{
+			"default": "1500",
+			"description": [
+				"Specifies the polling interval in milliseconds for conditional clicks. If not specified, a default polling interval will be used."
+			],
+			"mandatory": false,
+			"name": "Polling",
+			"type": "Number"
+		},
+		{
+			"description": [
+				"Specifies the condition that must be met for the click action to be considered successful. If not specified, the click action will be performed once."
+			],
+			"mandatory": false,
+			"name": "Condition",
+			"type": "String"
+		}
+	],
+	"pluginType": "Action",
+	"properties": [
+		{
+			"description": [
+				"Specifies the details for the click action, including parameters like timeout, polling interval, and condition. ",
+				"It includes a template or variable structure `{{$...}}` to allow dynamic values."
+			],
+			"mandatory": false,
+			"name": "Argument",
+			"type": "String|Expression"
+		},
+		{
+			"default": "Xpath",
+			"description": [
+				"Specifies the locator strategy to find the web element to be clicked. Supported locator types include `CssSelector`, `XPath`, `LinkText`, etc."
+			],
+			"mandatory": false,
+			"name": "Locator",
+			"type": "String"
+		},
+		{
+			"description": [
+				"Specifies the actual element identifier using the locator strategy defined. ",
+				"For example, if the locator is `CssSelector`, this would be a CSS selector string."
+			],
+			"mandatory": false,
+			"name": "OnElement",
+			"type": "String"
+		}
+	],
+	"protocol": {
+		"apiDocumentation": "https://www.w3.org/TR/webdriver/#element-click",
+		"w3c": "POST /session/{session id}/element/{element id}/click"
+	},
+	"scope": [
+		"Any"
+	],
+	"summary": [
+		"The `InvokeClick` plugin is designed to facilitate the interaction with elements through click actions. It can perform simple clicks as well as conditional clicks where the action is retried until a specified condition is met. This makes it highly versatile for automation tasks that require interaction with dynamic web elements.",
+		"Key features include support for various locator strategies, handling dynamic content, performing conditional clicks with customizable timeout and polling intervals, and ensuring robust interaction with web elements.",
+		"In RPA, it is used for automating user interactions such as form submissions, modal handling, and navigation through multi-step processes. The plugin's ability to handle conditional actions ensures that workflows can adapt based on the state of web elements, improving reliability and flexibility.",
+		"In automation testing, it is invaluable for verifying user interface interactions, testing dynamic behaviors, and ensuring that click functionalities remain consistent across different versions of the application. The plugin supports detailed configuration options to handle complex testing scenarios, making it an essential tool for thorough UI testing."
+	]
+}
