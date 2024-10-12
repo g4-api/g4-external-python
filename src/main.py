@@ -1,7 +1,9 @@
 import os
 import tomllib
 
+import yaml
 from flask import jsonify, request, Flask
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from models.error_model import ErrorModel
 from models.setup_model import SetupModel
@@ -12,9 +14,36 @@ from utilities.plugin_factory import PluginFactory
 # Initialize the Flask application.
 app = Flask(__name__)
 
+# Path to your OpenAPI YAML file
+OPENAPI_YAML_PATH = os.path.join(os.path.dirname(__file__), 'openapi.yaml')
+
+# Swagger UI configuration
+SWAGGER_URL = '/swagger'            # URL for exposing Swagger UI
+API_URL = '/api/docs/openapi.yaml'  # Our API spec
+
+# Swagger UI blueprint setup
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI endpoint
+    API_URL,      # OpenAPI YAML specification path
+    config={      # Swagger UI config overrides
+        'app_name': "G4™ External Plugins API"
+    }
+)
+
+# Register the blueprint
+app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
 # Initialize the plugins cache by loading plugins from the manifests directory.
 # Load the plugins into the cache when the application starts.
 plugins_cache = PluginFactory.initialize_manifest_cache()
+
+
+@app.route('/api/docs/openapi.yaml', methods=['GET'])
+def openapi_spec():
+    """Serve the OpenAPI YAML file."""
+    with open(OPENAPI_YAML_PATH, 'r') as file:
+        openapi_yaml = yaml.safe_load(file)
+    return jsonify(openapi_yaml)
 
 
 @app.route('/api/v4/g4/plugins', methods=['GET'])

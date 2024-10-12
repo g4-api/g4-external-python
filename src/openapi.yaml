@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: Plugin API
+  description: API for managing and invoking plugins.
+  version: 'v1.0'
+servers:
+  - url: http://localhost:9999
+    description: Local server
+
+paths:
+  /api/v4/g4/plugins:
+    get:
+      summary: Get all plugins
+      description: Retrieve all plugin manifests from the plugins cache.
+      responses:
+        '200':
+          description: List of plugin manifests.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: Plugin manifest
+        default:
+          description: Error in retrieving plugins.
+        '404':
+          description: Error in retrieving plugins.
+
+  /api/v4/g4/plugins/type/{plugin_type}/key/{plugin_name}:
+    get:
+      summary: Get plugin by type and name
+      description: Retrieve a specific plugin manifest by its type and key.
+      parameters:
+        - name: plugin_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: plugin_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plugin manifest.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error in retrieving plugin.
+        '404':
+          description: Plugin not found.
+
+  /api/v4/g4/plugins/{plugin_name}:
+    get:
+      summary: Get plugin by name
+      description: Retrieve a specific plugin manifest by its name.
+      parameters:
+        - name: plugin_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plugin manifest.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error in retrieving plugin.
+        '404':
+          description: Plugin not found.
+
+  /api/v4/g4/plugins/{plugin_type}/invoke:
+    post:
+      summary: Invoke plugin by type
+      description: Invoke a plugin based on its type and name.
+      parameters:
+        - name: plugin_type
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Plugin invocation request
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entity:
+                  type: object
+                  properties:
+                    pluginName:
+                      type: string
+                driverUrl:
+                  type: string
+                session:
+                  type: string
+      responses:
+        '200':
+          description: Plugin response.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error in invoking plugin.
+        '404':
+          description: Plugin or invocation parameters not found.
+
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      properties:
+        status:
+          type: integer
+        route_data:
+          type: object
+          properties:
+            method:
+              type: string
+            path:
+              type: string
+        trace_id:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+  SetupModel:
+    type: object
+    properties:
+      driver:
+        type: string
