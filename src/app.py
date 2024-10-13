@@ -249,9 +249,9 @@ if __name__ == '__main__':
         toml_config = tomllib.load(f)
 
     # Apply server configurations from the loaded TOML file.
-    host = toml_config['server']['host']
-    port = toml_config['server']['port']
-    debug = toml_config['server']['debug']
+    host = toml_config['server'].get('host', '0.0.0.0')
+    port = toml_config['server'].get('port', 5000)
+    debug = toml_config['server'].get('debug', False)
 
     # Run the application with loaded configurations.
     app.run(host=host, port=port, debug=debug, use_reloader=False)
