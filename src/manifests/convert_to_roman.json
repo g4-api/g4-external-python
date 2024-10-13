@@ -1,0 +1,157 @@
+{
+    "aliases": [
+        "RomanNumeral",
+        "ToRoman",
+        "IntToRoman"
+    ],
+    "author": {
+        "link": "https://www.linkedin.com/in/roei-sabag-247aa18/",
+        "name": "Roei Sabag"
+    },
+    "categories": [
+        "General"
+    ],
+    "description": [
+        "The ConvertToRoman macro plugin converts an integer into its Roman numeral representation, providing a unique way to display numbers within automation workflows and testing scenarios.",
+        "",
+        "### Purpose",
+        "",
+        "The primary purpose of the ConvertToRoman macro plugin is to enable the conversion of integer values to Roman numerals, which can be useful for formatting outputs, testing numeral systems, or adding a classical touch to data presentation.",
+        "",
+        "### Key Features",
+        "",
+        "| Feature             | Description                                                       |",
+        "|---------------------|-------------------------------------------------------------------|",
+        "| Integer Conversion  | Converts integers to their Roman numeral equivalents.             |",
+        "| Input Validation    | Validates input to ensure it is within acceptable range (1-3999). |",
+        "",
+        "### Usages in RPA",
+        "",
+        "| Usage             | Description                                                             |",
+        "|-------------------|-------------------------------------------------------------------------|",
+        "| Data Formatting   | Format numeric data into Roman numerals for reports or user interfaces. |",
+        "| Dynamic Inputs    | Use Roman numerals as part of dynamic input generation for testing.     |",
+        "",
+        "### Usages in Automation Testing",
+        "",
+        "| Usage             | Description                                                     |",
+        "|-------------------|-----------------------------------------------------------------|",
+        "| UI Testing        | Verify display elements handle Roman numerals correctly.        |",
+        "| Data Validation   | Ensure systems correctly process or store Roman numeral inputs. |"
+    ],
+    "examples": [
+        {
+            "description": [
+                "This example demonstrates the usage of the `SendKeys` plugin with the `{{$ConvertToRoman --Number:2023}}` macro as the argument.",
+                "",
+                "| Field      | Description                                                                                                          |",
+                "|------------|----------------------------------------------------------------------------------------------------------------------|",
+                "| pluginName | Identifies the specific plugin being utilized, which is `SendKeys`. This signifies the action of sending keystrokes. |",
+                "| locator    | Specifies the locating mechanism for the target element where the keystrokes will be sent.                           |",
+                "| onElement  | Indicates the value of the locator, representing the element where the keystrokes will be sent.                      |",
+                "| argument   | The macro token `{{$ConvertToRoman --Number:2023}}` converts the number 2023 to its Roman numeral representation.    |",
+                "",
+                "This example instructs the automation system to utilize the `SendKeys` plugin to send the Roman numeral representation of 2023 (`MMXXIII`) to the specified element."
+            ],
+            "rule": {
+                "argument": "{{$ConvertToRoman --Number:2023}}",
+                "locator": "CssSelector",
+                "onElement": ".date-field",
+                "pluginName": "SendKeys"
+            }
+        },
+        {
+            "description": [
+                "This example demonstrates the usage of the `WaitLog` plugin to log the Roman numeral equivalent of a dynamic number stored in a parameter.",
+                "",
+                "| Field      | Description                                                                                                                  |",
+                "|------------|------------------------------------------------------------------------------------------------------------------------------|",
+                "| pluginName | Identifies the specific plugin being utilized, which is `WaitLog`. This plugin is used to write information.                 |",
+                "| argument   | The macro token `{{$ConvertToRoman --Number:{{$Parameter:Year}}}}` converts the value of `Year` parameter to Roman numerals. |",
+                "",
+                "This example instructs the automation system to utilize the `WaitLog` plugin to write the Roman numeral representation of a dynamic year value to the log."
+            ],
+            "rule": {
+                "argument": "{{$ConvertToRoman --Number:{{$Parameter:Year}}}}",
+                "pluginName": "WriteLog"
+            }
+        },
+        {
+            "description": [
+                "This example demonstrates the usage of the `Click` plugin to interact with a button whose label is a Roman numeral converted from a number.",
+                "",
+                "| Field      | Description                                                                                                  |",
+                "|------------|--------------------------------------------------------------------------------------------------------------|",
+                "| pluginName | Identifies the specific plugin being utilized, which is `Click`. This plugin is used to perform click actions.|",
+                "| locator    | Specifies the locating mechanism, using XPath in this case.                                                  |",
+                "| onElement  | The XPath expression `//button[text()='{{$ConvertToRoman --Number:10}}']` locates a button labeled 'X'.      |",
+                "",
+                "This example instructs the automation system to utilize the `Click` plugin to click on a button labeled with the Roman numeral for 10."
+            ],
+            "rule": {
+                "locator": "Xpath",
+                "onElement": "//button[text()='{{$ConvertToRoman --Number:10}}']",
+                "pluginName": "Click"
+            }
+        },
+        {
+            "description": [
+                "This example demonstrates registering a parameter with the Roman numeral of a given number using the `RegisterParameter` plugin.",
+                "",
+                "| Field      | Description                                                                                                                        |",
+                "|------------|------------------------------------------------------------------------------------------------------------------------------------|",
+                "| pluginName | Identifies the specific plugin being utilized, which is `RegisterParameter`. This plugin registers parameters for later use.       |",
+                "| argument   | The macro token `{{$ --Name:RomanYear --Value:{{$ConvertToRoman --Number:2024}} --Scope:Session}}` stores 'MMXXIV' in `RomanYear`. |",
+                "",
+                "This example instructs the automation system to register a parameter named `RomanYear` with the Roman numeral equivalent of 2024."
+            ],
+            "rule": {
+                "argument": "{{$ --Name:RomanYear --Value:{{$ConvertToRoman --Number:2024}} --Scope:Session}}",
+                "pluginName": "RegisterParameter"
+            }
+        },
+        {
+            "description": [
+                "This example demonstrates using the `SendKeys` plugin to input a Roman numeral converted from a calculated number.",
+                "",
+                "| Field      | Description                                                                                                                           |",
+                "|------------|---------------------------------------------------------------------------------------------------------------------------------------|",
+                "| pluginName | Identifies the specific plugin being utilized, which is `SendKeys`. This plugin is used to send keystrokes to a specified element.    |",
+                "| locator    | Specifies the locating mechanism for the target element where the keystrokes will be sent.                                            |",
+                "| onElement  | Indicates the value of the locator, representing the element where the keystrokes will be sent.                                       |",
+                "| argument   | The macro token `{{$ConvertToRoman --Number:{{$Math --Expression:'50+50'}}}}` converts the result of `50+50` to Roman numerals ('C'). |",
+                "",
+                "This example instructs the automation system to send the Roman numeral for 100 to the specified element."
+            ],
+            "rule": {
+                "argument": "{{$ConvertToRoman --Number:{{$Math --Expression:'50+50'}}}}",
+                "locator": "CssSelector",
+                "onElement": ".total-field",
+                "pluginName": "SendKeys"
+            }
+        }
+    ],
+    "key": "ConvertToRoman",
+    "manifestVersion": 4,
+    "parameters": [
+        {
+            "description": [
+                "Specifies the integer number to be converted to Roman numerals. Valid range is from 1 to 3999."
+            ],
+            "mandatory": true,
+            "name": "Number",
+            "type": "Integer"
+        }
+    ],
+    "pluginType": "Macro",
+    "protocol": {
+        "apiDocumentation": "None",
+        "w3c": "None"
+    },
+    "scope": [
+        "Any"
+    ],
+    "summary": [
+        "The ConvertToRoman macro plugin converts an integer into its Roman numeral representation, useful for data formatting and testing."
+    ]
+}
