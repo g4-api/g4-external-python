@@ -31,7 +31,7 @@ class InvokePythonClick(PluginBase):
         """
         super().__init__(plugin_setup_model)
 
-    def invoke(self, action_request) -> PluginResponseModel:
+    def on_send(self, action_request) -> PluginResponseModel:
         """
         Executes the click action based on the provided action request.
 

@@ -81,15 +81,41 @@ class PluginResponseModel:
         """
         Converts the PluginResponseModel instance into a dictionary.
 
+        This method iterates over any exceptions and extractions associated with the
+        PluginResponseModel instance, converting each one to a dictionary format to allow
+        for easy serialization or further processing.
+
         Returns:
-            Dict[str, Any]: A dictionary representation of the model.
+            Dict[str, Any]: A dictionary representation of the model, including:
+                - applicationParameters: Application-specific parameters.
+                - dataProvider: Data provider details.
+                - entity: Information about the entity involved in the response.
+                - exceptions: List of exception details, converted to dictionaries.
+                - extractions: List of extraction details, converted to dictionaries.
+                - sessionParameters: Session-specific parameters.
         """
+
+        # Initialize an empty list to store converted exceptions
+        exceptions = []
+
+        # Convert each exception in the list to a dictionary and add to exceptions list
+        for exception in self.exceptions:
+            exceptions.append(exception.__dict__())
+
+        # Initialize an empty list to store converted extractions
+        extractions = []
+
+        # Convert each extraction in the list to a dictionary and add to extractions list
+        for extraction in self.extractions:
+            extractions.append(extraction.__dict__())
+
+        # Return a dictionary containing all attributes of PluginResponseModel
         return {
             "applicationParameters": self.application_parameters,
             "dataProvider": self.data_provider,
             "entity": self.entity,
-            "exceptions": self.exceptions,
-            "extractions": self.extractions,
+            "exceptions": exceptions,
+            "extractions": extractions,
             "sessionParameters": self.session_parameters
         }
 
@@ -114,11 +140,25 @@ class G4EntityModel:
 @dataclass
 class G4ExceptionModel:
     """Describes a contract for receiving G4 exceptions data."""
+    data: [Dict[str, Any]] = field(default_factory=dict)
+    iteration: int = 0
     plugin_name: Optional[str] = None
     reference: Any = None
-    repeat_reference: int = 0
     reason_phrase: str = ''
-    screenshots: Optional[str] = None
+    screenshot: Optional['ScreenshotModel'] = None
+    type: Optional[str] = None
+
+    # Convert the G4ExceptionModel instance to a dictionary
+    def __dict__(self):
+        return {
+            "data": self.data,
+            "iteration": self.iteration,
+            "pluginName": self.plugin_name,
+            "reference": self.reference,
+            "reasonPhrase": self.reason_phrase,
+            "screenshot": self.screenshot,
+            "type": self.type
+        }
 
 
 @dataclass
@@ -133,6 +173,13 @@ class G4SessionModel:
         self.machine_ip = machine_ip
         self.machine_name = machine_name
 
+    def __dict__(self):
+        return {
+            "id": self.id,
+            "machineIp": self.machine_ip,
+            "machineName": self.machine_name
+        }
+
 
 @dataclass
 class G4ExtractionModel:
@@ -141,3 +188,19 @@ class G4ExtractionModel:
     key: Optional[str] = None
     reference: Any = None
     session: Optional[G4SessionModel] = None
+
+    # Convert the G4ExtractionModel instance to a dictionary
+    def __dict__(self):
+        return {
+            "entities": self.entities,
+            "key": self.key,
+            "reference": self.reference,
+            "session": self.session.__dict__()
+        }
+
+
+@dataclass
+class ScreenshotModel:
+    """Describes a contract for receiving screenshot data."""
+    name: str = ''
+    data: str = ''

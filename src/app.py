@@ -209,7 +209,7 @@ def invoke(plugin_type):
     plugin_instance: PluginBase = plugin_class(setup_model)
 
     # Invoke the plugin with the provided request and convert the result to a dictionary
-    response = plugin_instance.invoke(plugin_request).to_dict()
+    response = plugin_instance.send(plugin_request).to_dict()
 
     # Return the JSON response
     return jsonify(response)

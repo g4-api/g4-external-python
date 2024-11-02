@@ -22,7 +22,7 @@ class ConvertToRoman(PluginBase):
         """
         super().__init__(plugin_setup_model)  # Initialize the base class with the setup model
 
-    def invoke(self, action_request) -> PluginResponseModel:
+    def on_send(self, action_request) -> PluginResponseModel:
         """
         Converts an integer value to its Roman numeral equivalent.
 
