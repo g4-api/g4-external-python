@@ -9,7 +9,7 @@
         "name": "Roei Sabag"
     },
     "categories": [
-        "General"
+        "ExternalPython"
     ],
     "description": [
         "The ConvertToRoman macro plugin converts an integer into its Roman numeral representation, providing a unique way to display numbers within automation workflows and testing scenarios.",

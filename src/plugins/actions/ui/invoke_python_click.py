@@ -46,10 +46,10 @@ class InvokePythonClick(PluginBase):
         rule = action_request["entity"]
 
         # Determine the locator type (default to XPath if locator_type is not specified in the rule)
-        locator_type = By.XPATH if not rule["locator"] else {rule["locator"]}
+        locator_type = 'xpath' if not rule["locator"] else PluginBase.convert_to_space_case(f'{rule["locator"]}')
 
         # Create a locator tuple based on the locator type and the element's identifier (onElement)
-        locator = (locator_type, rule["onElement"])
+        locator = (locator_type, f'{rule["onElement"]}')
 
         # Initialize a WebDriverWait instance to wait for the element to be present on the page (max wait: 10 seconds)
         driver_wait = wait.WebDriverWait(self.plugin_setup_model.driver, 10)

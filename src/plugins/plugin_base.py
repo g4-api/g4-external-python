@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from models.plugin_response_model import PluginResponseModel, G4ExceptionModel
 from models.setup_model import SetupModel
 
+import re
 import traceback
 
 
@@ -67,3 +68,20 @@ class PluginBase(ABC):
 
             # Return the response model containing the exception information
             return response
+
+    @staticmethod
+    def convert_to_space_case(pascal_str: str) -> str:
+        """
+        Converts a PascalCase string to a space-separated string in all lowercase.
+
+        For example, 'PascalCaseString' becomes 'pascal case string'.
+
+        Args:
+            pascal_str (str): The PascalCase string to convert.
+
+        Returns:
+            str: The converted string in space case.
+        """
+        # Insert a space before each uppercase letter that is not at the beginning,
+        # then convert the entire string to lowercase.
+        return re.sub(r'(?<!^)(?=[A-Z])', ' ', pascal_str).lower()
